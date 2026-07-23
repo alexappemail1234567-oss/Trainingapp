@@ -161,6 +161,7 @@
   .form-note{font-size:12px;color:var(--sage);}
   .form-msg{display:none;padding:12px 14px;border-radius:12px;background:rgba(201,164,78,.14);
     border:1px solid rgba(201,164,78,.4);color:var(--gold-lt);font-size:14px;}
+  .form-msg.err{background:rgba(214,90,60,.16);border-color:rgba(214,90,60,.5);color:#f2b8a6;}
 
   /* footer */
   footer{padding:54px 0 40px;border-top:1px solid var(--glass-brd);margin-top:40px;}
@@ -380,6 +381,10 @@
       <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11a7 7 0 10-14 0c0 4.5 7 11 7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4"/></svg> Your gym / studio, City</div>
     </div>
     <form class="form glass" id="bookForm">
+      <input type="hidden" name="access_key" value="db1174a6-9732-4539-a831-72f42fecee54">
+      <input type="hidden" name="subject" value="New enquiry from the A7 Training website">
+      <input type="hidden" name="from_name" value="A7 Training website">
+      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important">
       <div class="row">
         <div class="field"><label>Name</label><input name="name" placeholder="Jordan Smith" required></div>
         <div class="field"><label>Email</label><input name="email" type="email" placeholder="you@email.com" required></div>
@@ -395,7 +400,7 @@
       </div>
       <div class="field"><label>Message</label><textarea name="message" rows="3" placeholder="Where are you now, and where do you want to get to?"></textarea></div>
       <button type="submit" class="btn btn-gold" style="justify-content:center">Request your free consult</button>
-      <div class="form-msg" id="formMsg">Thanks — this is a demo form. Once the site is live we'll connect it to your inbox or booking tool.</div>
+      <div class="form-msg" id="formMsg"></div>
       <p class="form-note">By sending, you agree to be contacted about training. We never share your details.</p>
     </form>
   </div>
@@ -433,8 +438,23 @@
   var mb=document.getElementById('menuBtn'),nl=document.getElementById('navlinks');
   mb.addEventListener('click',function(){nl.classList.toggle('open');});
   nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
-  document.getElementById('bookForm').addEventListener('submit',function(e){
-    e.preventDefault();document.getElementById('formMsg').style.display='block';
+  var bf=document.getElementById('bookForm'),fm=document.getElementById('formMsg');
+  bf.addEventListener('submit',function(e){
+    e.preventDefault();
+    var btn=bf.querySelector('button[type=submit]'),label=btn.textContent;
+    btn.textContent='Sending…';btn.disabled=true;fm.style.display='none';
+    fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(bf)})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d.success){fm.textContent="Thanks — your message is in. I'll be in touch within 24 hours.";fm.className='form-msg';bf.reset();}
+        else{fm.textContent="Sorry, that didn't send. Please email hello@a7training.co.uk instead.";fm.className='form-msg err';}
+        fm.style.display='block';
+      })
+      .catch(function(){
+        fm.textContent="Couldn't send just now — check your connection, or email hello@a7training.co.uk.";
+        fm.className='form-msg err';fm.style.display='block';
+      })
+      .then(function(){btn.textContent=label;btn.disabled=false;});
   });
 </script>
 </body>
