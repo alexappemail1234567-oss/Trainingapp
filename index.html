@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A7 Training — Personal Training</title>
+<style>
+  :root{
+    --forest:#0F2A20; --forest-d:#0A1E16; --forest-2:#143529;
+    --gold:#C9A44E; --gold-lt:#D9C48A; --bone:#ECE7D8; --sage:#9DB0A2;
+    --glass:rgba(236,231,216,.06);
+    --glass-2:rgba(236,231,216,.10);
+    --glass-brd:rgba(236,231,216,.15);
+    --sans:"Helvetica Neue","Arial Nova",Arial,"Segoe UI",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);color:var(--bone);line-height:1.6;
+    background:var(--forest);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  /* ambient background behind the glass */
+  .bg{position:fixed;inset:0;z-index:-2;background:
+    radial-gradient(1200px 800px at 80% -10%, #1b4636 0%, transparent 55%),
+    radial-gradient(900px 700px at 0% 100%, #123f2e 0%, transparent 55%),
+    linear-gradient(160deg,#0F2A20 0%,#0A1E16 100%);}
+  .orb{position:fixed;z-index:-1;border-radius:50%;filter:blur(70px);opacity:.5;}
+  .orb.a{width:420px;height:420px;background:#C9A44E;top:-80px;right:-60px;opacity:.28;animation:float1 18s ease-in-out infinite;}
+  .orb.b{width:380px;height:380px;background:#2f7c5c;bottom:-120px;left:-80px;opacity:.4;animation:float2 22s ease-in-out infinite;}
+  .orb.c{width:300px;height:300px;background:#D9C48A;top:40%;left:60%;opacity:.14;animation:float1 26s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+  @media (prefers-reduced-motion:reduce){.orb{animation:none;}}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);}
+  h1,h2,h3{letter-spacing:-.02em;line-height:1.05;font-weight:800;color:var(--bone);text-wrap:balance;}
+  .gold{color:var(--gold);}
+  section{padding:88px 0;position:relative;}
+  .sec-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .sec-eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);}
+
+  /* glass */
+  .glass{
+    background:linear-gradient(135deg,var(--glass-2),var(--glass));
+    backdrop-filter:blur(22px) saturate(160%);
+    -webkit-backdrop-filter:blur(22px) saturate(160%);
+    border:1px solid var(--glass-brd);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 22px 46px rgba(0,0,0,.34);
+    border-radius:22px;
+  }
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;
+    padding:13px 22px;border-radius:100px;cursor:pointer;border:1px solid transparent;
+    text-decoration:none;transition:transform .15s ease, box-shadow .2s ease;white-space:nowrap;}
+  .btn:active{transform:translateY(1px);}
+  .btn-gold{background:linear-gradient(180deg,#E4CE93,#C9A44E);color:#0F2A20;
+    box-shadow:0 10px 24px rgba(201,164,78,.28), inset 0 1px 0 rgba(255,255,255,.5);}
+  .btn-gold:hover{box-shadow:0 14px 30px rgba(201,164,78,.4), inset 0 1px 0 rgba(255,255,255,.5);}
+  .btn-ghost{background:var(--glass);color:var(--bone);border:1px solid var(--glass-brd);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .btn-ghost:hover{background:var(--glass-2);}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:50;padding:12px 0;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:10px 16px 10px 18px;border-radius:100px;}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px;color:var(--bone);letter-spacing:-.01em;}
+  .brand .logo{width:25px;height:27px;color:var(--gold);display:block;}
+  .logo-badge{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;
+    background:linear-gradient(180deg,rgba(201,164,78,.30),rgba(201,164,78,.10));
+    border:1px solid rgba(201,164,78,.45);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.30), 0 6px 16px rgba(201,164,78,.16);}
+  .nav-links{display:flex;align-items:center;gap:6px;}
+  .nav-links a{color:var(--sage);text-decoration:none;font-size:14px;font-weight:600;padding:9px 13px;border-radius:100px;transition:.2s;}
+  .nav-links a:hover{color:var(--bone);background:var(--glass);}
+  .nav-cta{display:flex;align-items:center;gap:10px;}
+  .menu-btn{display:none;background:var(--glass);border:1px solid var(--glass-brd);color:var(--bone);
+    width:44px;height:44px;border-radius:14px;cursor:pointer;align-items:center;justify-content:center;}
+  .menu-btn svg{width:20px;height:20px;}
+
+  /* hero */
+  .hero{padding-top:56px;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;}
+  .hero h1{font-size:clamp(40px,6.4vw,72px);margin:16px 0 20px;}
+  .hero p.lede{font-size:19px;color:var(--sage);max-width:46ch;margin-bottom:30px;}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px;}
+  .trust{display:flex;gap:26px;flex-wrap:wrap;}
+  .trust .t{display:flex;flex-direction:column;}
+  .trust .t .n{font-size:24px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;}
+  .trust .t .l{font-size:12px;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;}
+  .hero-media{position:relative;}
+  .hero-media .frame{aspect-ratio:4/5;}
+  .float-card{position:absolute;left:-18px;bottom:26px;padding:16px 18px;display:flex;align-items:center;gap:12px;border-radius:18px;}
+  .float-card .star{color:var(--gold);font-size:20px;}
+  .float-card .fc-n{font-weight:800;font-size:18px;}
+  .float-card .fc-l{font-size:12px;color:var(--sage);}
+
+  /* media placeholder */
+  .media{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    border:1.5px dashed rgba(201,164,78,.45);border-radius:22px;background:rgba(10,30,22,.4);
+    color:var(--sage);text-align:center;padding:20px;overflow:hidden;}
+  .media svg{width:34px;height:34px;color:var(--gold);opacity:.9;}
+  .media .m-t{font-weight:700;color:var(--bone);font-size:14px;}
+  .media .m-s{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--sage);}
+
+  /* programs */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px;}
+  .card{padding:26px 22px 24px;display:flex;flex-direction:column;gap:12px;transition:transform .2s ease,border-color .2s;}
+  .card:hover{transform:translateY(-4px);border-color:rgba(201,164,78,.4);}
+  .card .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+    background:linear-gradient(180deg,rgba(201,164,78,.28),rgba(201,164,78,.12));border:1px solid rgba(201,164,78,.3);}
+  .card .ic svg{width:24px;height:24px;color:var(--gold);}
+  .card h3{font-size:18px;}
+  .card p{font-size:14px;color:var(--sage);flex:1;}
+  .card .price{font-family:var(--mono);font-size:13px;color:var(--gold-lt);letter-spacing:.04em;}
+
+  /* about */
+  .about{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;}
+  .about .media{aspect-ratio:1/1;}
+  .about h2{font-size:clamp(30px,4vw,44px);margin-bottom:16px;}
+  .about p{color:var(--sage);margin-bottom:16px;max-width:52ch;}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+  .chip{font-size:12px;font-weight:600;color:var(--gold-lt);padding:7px 13px;border-radius:100px;
+    background:var(--glass);border:1px solid var(--glass-brd);}
+
+  /* results */
+  .section-head{text-align:center;max-width:640px;margin:0 auto 40px;}
+  .section-head .sec-eyebrow{justify-content:center;}
+  .section-head h2{font-size:clamp(30px,4vw,46px);}
+  .section-head p{color:var(--sage);margin-top:12px;}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .gallery .media{aspect-ratio:1/1;}
+  .gallery .media.tall{grid-row:span 2;aspect-ratio:auto;}
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;}
+  .quote{padding:24px;}
+  .quote .stars{color:var(--gold);letter-spacing:2px;margin-bottom:10px;}
+  .quote p{font-size:15px;color:var(--bone);margin-bottom:14px;}
+  .quote .who{font-size:13px;color:var(--sage);font-weight:600;}
+
+  /* contact */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;}
+  .contact-info{padding:36px;display:flex;flex-direction:column;gap:22px;justify-content:center;}
+  .contact-info h2{font-size:clamp(28px,3.6vw,40px);}
+  .contact-info p{color:var(--sage);}
+  .info-row{display:flex;align-items:center;gap:13px;color:var(--bone);font-size:15px;}
+  .info-row svg{width:20px;height:20px;color:var(--gold);flex:none;}
+  .form{padding:32px;display:flex;flex-direction:column;gap:14px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--sage);font-weight:600;}
+  .field input,.field select,.field textarea{
+    font-family:inherit;font-size:15px;color:var(--bone);padding:12px 14px;border-radius:12px;
+    background:rgba(10,30,22,.5);border:1px solid var(--glass-brd);outline:none;transition:border-color .2s;}
+  .field input::placeholder,.field textarea::placeholder{color:#6f8478;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);}
+  .field select{appearance:none;}
+  .form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .form-note{font-size:12px;color:var(--sage);}
+  .form-msg{display:none;padding:12px 14px;border-radius:12px;background:rgba(201,164,78,.14);
+    border:1px solid rgba(201,164,78,.4);color:var(--gold-lt);font-size:14px;}
+
+  /* footer */
+  footer{padding:54px 0 40px;border-top:1px solid var(--glass-brd);margin-top:40px;}
+  .foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start;}
+  .foot-brand{max-width:280px;}
+  .foot-brand .brand{margin-bottom:12px;}
+  .foot-brand p{color:var(--sage);font-size:14px;}
+  .foot-col h4{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold-lt);margin-bottom:14px;font-weight:700;}
+  .foot-col a{display:block;color:var(--sage);text-decoration:none;font-size:14px;margin-bottom:9px;transition:.2s;}
+  .foot-col a:hover{color:var(--bone);}
+  .copyright{margin-top:40px;padding-top:20px;border-top:1px solid var(--glass-brd);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--sage);font-size:13px;}
+
+  /* responsive */
+  @media (max-width:980px){
+    .cards{grid-template-columns:repeat(2,1fr);}
+    .hero-grid,.about,.contact-grid{grid-template-columns:1fr;}
+    .about .media{max-width:420px;}
+    .hero-media{max-width:460px;margin:0 auto;width:100%;}
+  }
+  @media (max-width:720px){
+    section{padding:64px 0;}
+    .nav-links{display:none;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;
+      align-items:stretch;gap:4px;padding:14px;border-radius:22px;}
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:12px 14px;font-size:16px;}
+    .menu-btn{display:flex;}
+    .nav-cta .btn-ghost{display:none;}
+    .gallery{grid-template-columns:repeat(2,1fr);}
+    .gallery .media.tall{grid-row:span 1;}
+    .quotes{grid-template-columns:1fr;}
+    .form .row{grid-template-columns:1fr;}
+  }
+  @media (max-width:440px){
+    .cards{grid-template-columns:1fr;}
+    .gallery{grid-template-columns:1fr;}
+    .trust{gap:18px;}
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+
+<!-- reusable logo -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="a7" viewBox="0 0 145 158">
+    <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M28,102 L56,22"/><path d="M56,22 L84,102"/><path d="M12,60 L126,60"/><path d="M126,60 L96,150"/><path d="M84,102 L130,102"/>
+    </g>
+    <g fill="currentColor">
+      <rect x="24" y="46" width="5.5" height="28" rx="1.6"/><rect x="17" y="51" width="2.5" height="18" rx="1"/>
+      <rect x="82.5" y="46" width="5.5" height="28" rx="1.6"/><rect x="92.5" y="51" width="2.5" height="18" rx="1"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap">
+    <div class="nav-inner glass">
+      <a class="brand" href="#top" style="text-decoration:none">
+        <span class="logo-badge"><svg class="logo" viewBox="0 0 145 158"><use href="#a7"/></svg></span>
+        A7 Training
+      </a>
+      <nav class="nav-links" id="navlinks">
+        <a href="#programs">Programs</a>
+        <a href="#about">About</a>
+        <a href="#results">Results</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-ghost">Sign in</a>
+        <a href="#contact" class="btn btn-gold">Book a session</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Personal training · strength &amp; conditioning</span>
+      <h1>Train with intent.<br><span class="gold">Build strength that lasts.</span></h1>
+      <p class="lede">One-to-one and small-group coaching that meets you where you are — and moves you further than you thought you'd go. Real programming, honest coaching, results you keep.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-gold">Start with a free consult</a>
+        <a href="#programs" class="btn btn-ghost">See the programs</a>
+      </div>
+      <div class="trust">
+        <div class="t"><span class="n">10+</span><span class="l">Years coaching</span></div>
+        <div class="t"><span class="n">500+</span><span class="l">Clients trained</span></div>
+        <div class="t"><span class="n">4.9★</span><span class="l">Avg rating</span></div>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="media frame glass">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L5 21" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="m-t">Hero photo of you coaching</span>
+        <span class="m-s">portrait · approx 1200 × 1500</span>
+      </div>
+      <div class="float-card glass">
+        <span class="star">★</span>
+        <div><div class="fc-n">Trusted by 500+</div><div class="fc-l">members &amp; athletes</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="eyebrow">What we offer</span></div>
+    <h2 style="font-size:clamp(30px,4vw,46px)">Programs built around your goal</h2>
+    <div class="cards">
+      <div class="card glass">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="3.2"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6" stroke-linecap="round"/></svg></div>
+        <h3>1-to-1 Coaching</h3>
+        <p>Fully bespoke sessions built around your goal, your body and your pace — with hands-on form work every rep.</p>
+        <span class="price">From £45 / session</span>
+      </div>
+      <div class="card glass">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="2.6"/><circle cx="16" cy="9" r="2.2"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5M15 20c0-2.3.9-3.9 3-4.4" stroke-linecap="round"/></svg></div>
+        <h3>Small Group</h3>
+        <p>Train in a pod of three or four. Coached intensity and accountability, at a shared cost.</p>
+        <span class="price">From £20 / session</span>
+      </div>
+      <div class="card glass">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2.5" width="14" height="19" rx="3"/><path d="M10 18h4" stroke-linecap="round"/></svg></div>
+        <h3>Online Coaching</h3>
+        <p>Custom programming, weekly check-ins and video form reviews — wherever and whenever you train.</p>
+        <span class="price">From £90 / month</span>
+      </div>
+      <div class="card glass">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9v6M20 9v6M7 7v10M17 7v10M7 12h10" stroke-linecap="round"/></svg></div>
+        <h3>Strength &amp; Conditioning</h3>
+        <p>Barbell-led plans to build real, lasting strength — squat, press, pull, and the engine to back it up.</p>
+        <span class="price">From £55 / session</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap about">
+    <div class="media glass">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L5 21" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="m-t">Photo of the coach</span>
+      <span class="m-s">square · approx 1000 × 1000</span>
+    </div>
+    <div>
+      <div class="sec-eyebrow"><span class="eyebrow">The coach</span></div>
+      <h2>Hi, I'm <span class="gold">[Your name]</span></h2>
+      <p>I started A7 Training on one belief: everyone deserves coaching that's actually built for them — not a template, not a fad. Whether you're chasing your first pull-up or your next PB, we'll build a plan you can stick to and progress you can measure.</p>
+      <p>Expect straight-talking coaching, proper technique, and a bit of a laugh along the way. The bar goes up, and so do you.</p>
+      <div class="chips">
+        <span class="chip">Level 3 Personal Trainer</span>
+        <span class="chip">Strength &amp; Conditioning</span>
+        <span class="chip">Nutrition Coach</span>
+        <span class="chip">Rehab &amp; injury-aware</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sec-eyebrow"><span class="eyebrow">Proof, not promises</span></div>
+      <h2>Results &amp; real people</h2>
+      <p>Drop in transformation photos, action shots and short clips here — the grid handles mixed sizes.</p>
+    </div>
+    <div class="gallery">
+      <div class="media tall glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 5v14l11-7z" stroke-linejoin="round"/></svg><span class="m-t">Video clip</span><span class="m-s">portrait · 9:16</span></div>
+      <div class="media glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L5 21" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="m-t">Before / after</span><span class="m-s">1000 × 1000</span></div>
+      <div class="media glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L5 21" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="m-t">Action shot</span><span class="m-s">1000 × 1000</span></div>
+      <div class="media glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L5 21" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="m-t">Training shot</span><span class="m-s">1000 × 1000</span></div>
+      <div class="media glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 5v14l11-7z" stroke-linejoin="round"/></svg><span class="m-t">Short clip</span><span class="m-s">square · 1:1</span></div>
+    </div>
+    <div class="quotes">
+      <div class="quote glass">
+        <div class="stars">★★★★★</div>
+        <p>"Down two stone and stronger than I've ever been. The programming just works, and the sessions fly by."</p>
+        <div class="who">— Client name, goal achieved</div>
+      </div>
+      <div class="quote glass">
+        <div class="stars">★★★★★</div>
+        <p>"First proper coaching I've had. My deadlift went from 80kg to 140kg in a year, pain-free."</p>
+        <div class="who">— Client name, strength</div>
+      </div>
+      <div class="quote glass">
+        <div class="stars">★★★★★</div>
+        <p>"Online coaching kept me on track through a busy year. Check-ins and form reviews are gold."</p>
+        <div class="who">— Client name, online</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-info glass">
+      <div>
+        <div class="sec-eyebrow"><span class="eyebrow">Let's talk</span></div>
+        <h2>Book your free consult</h2>
+      </div>
+      <p>Tell me your goal and I'll come back within 24 hours with the best way to get started. No pressure, no hard sell.</p>
+      <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6l8 6 8-6M4 6h16v12H4z" stroke-linejoin="round"/></svg> hello@a7training.co.uk</div>
+      <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke-linejoin="round"/></svg> +44 (0)7000 000000</div>
+      <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11a7 7 0 10-14 0c0 4.5 7 11 7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4"/></svg> Your gym / studio, City</div>
+    </div>
+    <form class="form glass" id="bookForm">
+      <div class="row">
+        <div class="field"><label>Name</label><input name="name" placeholder="Jordan Smith" required></div>
+        <div class="field"><label>Email</label><input name="email" type="email" placeholder="you@email.com" required></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Phone</label><input name="phone" placeholder="Optional"></div>
+        <div class="field"><label>Goal</label>
+          <select name="goal">
+            <option>Build muscle</option><option>Lose fat</option><option>Get stronger</option>
+            <option>General fitness</option><option>Sport-specific</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Message</label><textarea name="message" rows="3" placeholder="Where are you now, and where do you want to get to?"></textarea></div>
+      <button type="submit" class="btn btn-gold" style="justify-content:center">Request your free consult</button>
+      <div class="form-msg" id="formMsg">Thanks — this is a demo form. Once the site is live we'll connect it to your inbox or booking tool.</div>
+      <p class="form-note">By sending, you agree to be contacted about training. We never share your details.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><svg class="logo" viewBox="0 0 145 158"><use href="#a7"/></svg> A7 Training</div>
+        <p>Personal training, strength &amp; conditioning, and online coaching. Train with intent.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <a href="#programs">Programs</a><a href="#about">About</a><a href="#results">Results</a><a href="#contact">Book a session</a>
+      </div>
+      <div class="foot-col">
+        <h4>Follow</h4>
+        <a href="#">Instagram</a><a href="#">TikTok</a><a href="#">YouTube</a><a href="#">Strava</a>
+      </div>
+      <div class="foot-col">
+        <h4>Hours</h4>
+        <a href="#">Mon–Fri · 6am–8pm</a><a href="#">Sat · 8am–1pm</a><a href="#">Sun · Rest &amp; recover</a>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>© 2026 A7 Training. All rights reserved.</span>
+      <span>Built with intent.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var mb=document.getElementById('menuBtn'),nl=document.getElementById('navlinks');
+  mb.addEventListener('click',function(){nl.classList.toggle('open');});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});
+  document.getElementById('bookForm').addEventListener('submit',function(e){
+    e.preventDefault();document.getElementById('formMsg').style.display='block';
+  });
+</script>
+</body>
+</html>
