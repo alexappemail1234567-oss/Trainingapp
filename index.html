@@ -376,7 +376,7 @@
         <h2>Book your free consult</h2>
       </div>
       <p>Tell me your goal and I'll come back within 24 hours with the best way to get started. No pressure, no hard sell.</p>
-      <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6l8 6 8-6M4 6h16v12H4z" stroke-linejoin="round"/></svg> hello@a7training.co.uk</div>
+      <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6l8 6 8-6M4 6h16v12H4z" stroke-linejoin="round"/></svg> a7training365@gmail.com</div>
       <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke-linejoin="round"/></svg> +44 (0)7000 000000</div>
       <div class="info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11a7 7 0 10-14 0c0 4.5 7 11 7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4"/></svg> Your gym / studio, City</div>
     </div>
@@ -447,11 +447,11 @@
       .then(function(r){return r.json();})
       .then(function(d){
         if(d.success){fm.textContent="Thanks — your message is in. I'll be in touch within 24 hours.";fm.className='form-msg';bf.reset();}
-        else{fm.textContent="Sorry, that didn't send. Please email hello@a7training.co.uk instead.";fm.className='form-msg err';}
+        else{fm.textContent="Sorry, that didn't send. Please email a7training365@gmail.com instead.";fm.className='form-msg err';}
         fm.style.display='block';
       })
       .catch(function(){
-        fm.textContent="Couldn't send just now — check your connection, or email hello@a7training.co.uk.";
+        fm.textContent="Couldn't send just now — check your connection, or email a7training365@gmail.com.";
         fm.className='form-msg err';fm.style.display='block';
       })
       .then(function(){btn.textContent=label;btn.disabled=false;});
