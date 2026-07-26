@@ -156,7 +156,10 @@
     background:rgba(10,30,22,.5);border:1px solid var(--glass-brd);outline:none;transition:border-color .2s;}
   .field input::placeholder,.field textarea::placeholder{color:#6f8478;}
   .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);}
-  .field select{appearance:none;}
+  .field select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:38px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23C9A44E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center;}
+  .field select option{background:#12311f;color:var(--bone);}
   .form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   .form-note{font-size:12px;color:var(--sage);}
   .form-msg{display:none;padding:12px 14px;border-radius:12px;background:rgba(201,164,78,.14);
@@ -258,7 +261,7 @@
     <div>
       <span class="eyebrow">Personal training · strength &amp; conditioning</span>
       <h1>Train with intent.<br><span class="gold">Build strength that lasts.</span></h1>
-      <p class="lede">One-to-one and small-group coaching that meets you where you are — and moves you further than you thought you'd go. Real programming, honest coaching, results you keep.</p>
+      <p class="lede">One-to-one, partner and online coaching that meets you where you are — and moves you further than you thought you'd go. Real programming, honest coaching, results you keep.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-gold">Start with a free consult</a>
         <a href="#programs" class="btn btn-ghost">See the programs</a>
@@ -318,7 +321,7 @@
     </div>
     <div>
       <div class="sec-eyebrow"><span class="eyebrow">About me</span></div>
-      <h2 class="gold">Hi, I'm Alex</h2>
+      <h2>Hi, I'm Alex</h2>
       <p>Fitness turned things around for me. What began as a way to get in shape became the thing that gave me confidence, discipline and a real sense of what I'm capable of — it didn't just change how I looked, it changed how I felt about myself.</p>
       <p>I started A7 Training to give other people that same feeling. Whatever your starting point, I'll help you build strength, move better and surprise yourself with what you can do.</p>
       <div class="chips">
@@ -391,8 +394,8 @@
         <div class="field"><label>Phone</label><input name="phone" placeholder="Optional"></div>
         <div class="field"><label>Goal</label>
           <select name="goal">
-            <option>Build muscle</option><option>Lose fat</option><option>Get stronger</option>
-            <option>General fitness</option><option>Sport-specific</option>
+            <option>Muscle Gain</option><option>Weight Loss</option>
+            <option>General Fitness</option><option>Sport Specific</option>
           </select>
         </div>
       </div>
